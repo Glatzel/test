@@ -1,0 +1,36 @@
+﻿<Project>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <Configurations>Debug;Release</Configurations>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TargetFramework>net48</TargetFramework>
+    <DefineConstants>$(DefineConstants);REVIT$(RevitVersion)</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RevitVersion Condition="'$(RevitVersion)'==''">2016</RevitVersion>
+    <RevitAddinDir>C:\ProgramData\Autodesk\Revit\Addins\$(RevitVersion)</RevitAddinDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>$(ProjectDir)bin\revit$(RevitVersion)\</OutputPath>
+    <IntermediateOutputPath>$(ProjectDir)obj\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <!--for revit version < 2019, use "debug->attach to process" to debug -->
+    <StartAction Condition="$(RevitVersion) &lt;= '2018'">Project</StartAction>
+    <StartAction Condition="$(RevitVersion) &gt;'2018'">Program</StartAction>
+    <StartProgram Condition="$(RevitVersion)&gt;'2018'">C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="$(RevitVersion).*" >
+      <IncludeAssets>compile</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
